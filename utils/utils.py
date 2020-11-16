@@ -79,6 +79,33 @@ def sample_file(filename, k=5):
         return selected
 
 
+def sample_dict(array, k=5):
+    """
+    Random select k lines from input file.
+    :param filename: input file directory.
+    :param k: selected number.
+    :return: list of lines
+    """
+    selected = list()
+    line_cnt = len(array)
+    if line_cnt < k:
+        selected = list(map(lambda x: x.rstrip(), array))
+
+    else:
+        # generate k random number and sort them
+        random_index = sorted(random.sample(range(line_cnt), k), reverse=True)
+        select_index = random_index.pop()
+        for idx, line in enumerate(array):
+            if idx == select_index:
+                selected.append(line.rstrip())
+                if len(random_index) > 0:
+                    select_index = random_index.pop()
+                else:
+                    break
+
+    return selected
+
+
 def get_stop_words(d):
     with open(d, 'r', encoding='utf-8') as infile:
         data = infile.readlines()
